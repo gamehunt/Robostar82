@@ -28,7 +28,7 @@ void setup() {
 
 }
 
-inline void setSpeed(int motor, int speed) {
+void setSpeed(int motor, int speed) {
   if(motor == MOTOR1) {
     Mini.I2C1.MXctrl.motorSet(motor, -speed);
   } else {
