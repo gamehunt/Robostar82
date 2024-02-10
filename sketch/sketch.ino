@@ -10,6 +10,7 @@
 
 #define MOTOR1 1
 #define MOTOR2 4
+#define MOTOR_ELEVATOR 2
 
 bool ctrlMode = false;
 bool autoMode = true;
@@ -36,7 +37,7 @@ void setSpeed(int motor, int speed) {
   }
 }
 
-void drive(int speed1,int speed2,int time) {
+void drive(int speed1, int speed2, int time) {
   Mini.I2C1.MXctrl.motorSet(MOTOR1, SPEED1 * -speed1);
   Mini.I2C1.MXctrl.motorSet(MOTOR2, SPEED2 * speed2);
   delay(time);
@@ -97,14 +98,14 @@ void loop() {
 
 // вверх вниз
     if(Mini.PS2.TRIANGLE) {
-      Mini.I2C1.MXctrl.motorSet(2, 40);
+      Mini.I2C1.MXctrl.motorSet(MOTOR_ELEVATOR, 40);
       delay(200);
-      Mini.I2C1.MXctrl.motorSet(2, 0);
+      Mini.I2C1.MXctrl.motorSet(MOTOR_ELEVATOR, 0);
       delay(10);
     } else if(Mini.PS2.CROSS) {
-      Mini.I2C1.MXctrl.motorSet(2, -40);
+      Mini.I2C1.MXctrl.motorSet(MOTOR_ELEVATOR, -40);
       delay(200);
-      Mini.I2C1.MXctrl.motorSet(2, 0);
+      Mini.I2C1.MXctrl.motorSet(MOTOR_ELEVATOR, 0);
       delay(10);
     }
 //___________
