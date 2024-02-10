@@ -32,7 +32,6 @@ inline void setSpeed(int motor, int speed) {
   if(motor == MOTOR1) {
     Mini.I2C1.MXctrl.motorSet(motor, -speed);
   } else {
-    /// 123i129839128y38921
     Mini.I2C1.MXctrl.motorSet(motor, speed);
   }
 }
