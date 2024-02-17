@@ -1,6 +1,4 @@
 #include <MatrixMini.h>
-#include <MatrixLaserSensor.h>
-#include <Arduino>
 
 #define SPEED1 21
 #define SPEED2 30
@@ -11,6 +9,8 @@
 #define MOTOR1 1
 #define MOTOR2 4
 #define MOTOR_ELEVATOR 2
+
+#define MAX_FLAG_DISTANCE 200
 
 bool ctrlMode = false;
 bool autoMode = true;
@@ -27,23 +27,20 @@ void setup() {
         while(1);  
   }
 
+  Mini.I2C1.MXctrl.motorInvert(MOTOR1, true);
 }
 
 void setSpeed(int motor, int speed) {
-  if(motor == MOTOR1) {
-    Mini.I2C1.MXctrl.motorSet(motor, -speed);
-  } else {
-    Mini.I2C1.MXctrl.motorSet(motor, speed);
-  }
+  Mini.I2C1.MXctrl.motorSet(motor, speed);
 }
 
 void drive(int speed1, int speed2, int time) {
-  Mini.I2C1.MXctrl.motorSet(MOTOR1, SPEED1 * -speed1);
-  Mini.I2C1.MXctrl.motorSet(MOTOR2, SPEED2 * speed2);
+  setSpeed(MOTOR1, SPEED1 * speed1);
+  setSpeed(MOTOR2, SPEED2 * speed2);
   delay(time);
 
-  Mini.I2C1.MXctrl.motorSet(MOTOR1, 0);
-  Mini.I2C1.MXctrl.motorSet(MOTOR2, 0);
+  setSpeed(MOTOR1, 0);
+  setSpeed(MOTOR2, 0);
   delay(100);
 }
 
@@ -69,14 +66,30 @@ void move(int x, int sp, bool turbo) {
   }
 
 }
+
+int readDistance() {
+  return Mini.I2C2.MXlaser.getDistance();
+}
+
+bool flagDetected() {
+  return readDistance() <= MAX_FLAG_DISTANCE;
+}
+
+void automode(bool simple) {
+  if(simple) {
+    drive(1, -1, 800);
+    drive(2, 2, 800);
+  } else {
+    drive(1, 1, 800);
+  }
+  delay(300);
+}
+
 //___________
 
 void loop() {
-
   if(autoMode && Mini.PS2.START){
-    drive(1, -1, 800);
-    drive(2, 2, 800);
-    delay(300);
+    automode(false);
     autoMode = false;
   }
 
@@ -87,8 +100,7 @@ void loop() {
   delay(50);
   Mini.PS2.polling();
 
-  if(ctrlMode){
-
+  if(ctrlMode) {
     int sp = 0;
     if(Mini.PS2.R1) {
       sp = 1;
@@ -98,14 +110,14 @@ void loop() {
 
 // вверх вниз
     if(Mini.PS2.TRIANGLE) {
-      Mini.I2C1.MXctrl.motorSet(MOTOR_ELEVATOR, 40);
+      setSpeed(MOTOR_ELEVATOR, 40);
       delay(200);
-      Mini.I2C1.MXctrl.motorSet(MOTOR_ELEVATOR, 0);
+      setSpeed(MOTOR_ELEVATOR, 0);
       delay(10);
     } else if(Mini.PS2.CROSS) {
-      Mini.I2C1.MXctrl.motorSet(MOTOR_ELEVATOR, -40);
+      setSpeed(MOTOR_ELEVATOR, -40);
       delay(200);
-      Mini.I2C1.MXctrl.motorSet(MOTOR_ELEVATOR, 0);
+      setSpeed(MOTOR_ELEVATOR, 0);
       delay(10);
     }
 //___________
@@ -115,10 +127,9 @@ void loop() {
     int x = Mini.PS2.RX;
 
     //int q = Mini.PS2.RX;
-    Serial.println(sp);
+    //Serial.println(sp);
 
     move(x, sp, Mini.PS2.R2);
-
   }
 
 }
