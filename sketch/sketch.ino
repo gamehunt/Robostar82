@@ -28,6 +28,8 @@ void setup() {
   }
 
   Mini.I2C1.MXctrl.motorInvert(MOTOR1, true);
+  Serial.print("Battery charge: ");
+  Serial.println(Mini.I2C1.MXctrl.getBattery());
 }
 
 void setSpeed(int motor, int speed) {
@@ -81,6 +83,20 @@ void automode(bool simple) {
     drive(2, 2, 800);
   } else {
     drive(1, 1, 800);
+    delay(300);
+    drive(1, -1, 800);
+    for(int i = 0; i < 3; i++) {
+      if(flagDetected()) {      
+        Mini.RGB1.setRGB(0, 255, 0);
+      } else {
+        Mini.RGB1.setRGB(255, 0, 0);
+      }
+
+      if(i < 2) {
+        drive(1, 1, 900);
+        delay(300);
+      }
+    }
   }
   delay(300);
 }
