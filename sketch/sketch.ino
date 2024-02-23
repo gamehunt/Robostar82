@@ -1,16 +1,18 @@
 #include <MatrixMini.h>
 
-#define SPEED1 21
-#define SPEED2 30
+#define SPEED1 7 * 3
+#define SPEED2 10 * 3
 
-#define SPEED_TURBO1 14 * 5
-#define SPEED_TURBO2 20 * 5
+#define SPEED_TURBO1 7 * 10
+#define SPEED_TURBO2 10 * 10
 
 #define MOTOR1 1
 #define MOTOR2 4
-#define MOTOR_ELEVATOR 2
+#define MOTOR_ELEVATOR 3
 
 #define MAX_FLAG_DISTANCE 200
+
+#define AUTO_MODE_DELAY 300
 
 bool ctrlMode = false;
 bool autoMode = true;
@@ -82,14 +84,35 @@ void automode(bool simple) {
     drive(1, -1, 800);
     drive(2, 2, 800);
   } else {
-    drive(1, 1, 800);
-    delay(300);
-    drive(1, -1, 800);
+    drive(1, 1, 1000);
+    delay(AUTO_MODE_DELAY);
+    drive(1, -1, 900);
+    delay(AUTO_MODE_DELAY);
     for(int i = 0; i < 3; i++) {
       if(flagDetected()) {      
         Mini.RGB1.setRGB(0, 255, 0);
+        if(i==0) {
+          drive(-1, 1, 800);
+          delay(AUTO_MODE_DELAY);
+          drive(1, 1, 800);
+          delay(AUTO_MODE_DELAY);
+          drive(1, -1, 1100);
+          delay(AUTO_MODE_DELAY);
+          drive(1, 1, 2400);
+          break;
+        } else if(i==1) {
+          drive(-1, 1, 800);
+          delay(AUTO_MODE_DELAY);
+          drive(1, 1, 1600);
+          delay(AUTO_MODE_DELAY);
+          drive(-1, 1, 800);
+          delay(AUTO_MODE_DELAY);
+          drive(1, 1, 800);
+          break;
+        }
+
       } else {
-        Mini.RGB1.setRGB(255, 0, 0);
+          Mini.RGB1.setRGB(255, 0, 0);
       }
 
       if(i < 2) {
@@ -99,6 +122,17 @@ void automode(bool simple) {
     }
   }
   delay(300);
+}
+
+void elCtrl(bool reverse=false) {
+  int turn = 1;
+  if(reverse) {
+    turn = -1;
+  }
+  setSpeed(MOTOR_ELEVATOR, turn * 40);
+  delay(200);
+  setSpeed(MOTOR_ELEVATOR, 0);
+  delay(10);
 }
 
 //___________
@@ -125,27 +159,14 @@ void loop() {
     }
 
 // вверх вниз
-    if(Mini.PS2.TRIANGLE) {
-      setSpeed(MOTOR_ELEVATOR, 40);
-      delay(200);
-      setSpeed(MOTOR_ELEVATOR, 0);
-      delay(10);
-    } else if(Mini.PS2.CROSS) {
-      setSpeed(MOTOR_ELEVATOR, -40);
-      delay(200);
-      setSpeed(MOTOR_ELEVATOR, 0);
-      delay(10);
+    if(Mini.PS2.CROSS) {
+      elCtrl();
+    } else if(Mini.PS2.TRIANGLE) {
+      elCtrl(true);
     }
 //___________
-    
-
-   // Serial.println(sp);
     int x = Mini.PS2.RX;
-
-    //int q = Mini.PS2.RX;
-    //Serial.println(sp);
-
     move(x, sp, Mini.PS2.R2);
   }
 
-}
+}                             //negrnegrnegrnegrnegrnegrnegrnegrnegrnegrnegryapidorasyapidorasyapidoras
