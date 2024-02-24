@@ -86,7 +86,7 @@ void automode(bool simple) {
   } else {
     drive(1, 1, 1000);
     delay(AUTO_MODE_DELAY);
-    drive(1, -1, 900);
+    drive(1, -1, 800);
     delay(AUTO_MODE_DELAY);
     for(int i = 0; i < 3; i++) {
       if(flagDetected()) {      
@@ -96,7 +96,7 @@ void automode(bool simple) {
           delay(AUTO_MODE_DELAY);
           drive(1, 1, 800);
           delay(AUTO_MODE_DELAY);
-          drive(1, -1, 1100);
+          drive(1, -1, 920);
           delay(AUTO_MODE_DELAY);
           drive(1, 1, 2400);
           break;
@@ -105,9 +105,9 @@ void automode(bool simple) {
           delay(AUTO_MODE_DELAY);
           drive(1, 1, 1600);
           delay(AUTO_MODE_DELAY);
-          drive(-1, 1, 800);
+          drive(-1, 1, 500);
           delay(AUTO_MODE_DELAY);
-          drive(1, 1, 800);
+          drive(1, 1, 1000);
           break;
         }
 
@@ -116,8 +116,17 @@ void automode(bool simple) {
       }
 
       if(i < 2) {
-        drive(1, 1, 900);
+        drive(1, 1, 850);
         delay(300);
+      } else {
+        drive(-1, 1, 800);
+        delay(AUTO_MODE_DELAY);
+        drive(1, 1, 2600);
+        delay(AUTO_MODE_DELAY);
+        drive(1, -1, 800);
+        delay(AUTO_MODE_DELAY);
+        drive(1, 1, 1600);
+        break;
       }
     }
   }
@@ -169,5 +178,4 @@ void loop() {
     move(x, sp, Mini.PS2.R2);
   }
 
-}                             //negrnegrnegrnegrnegrnegrnegrnegrnegrnegrnegryapidorasyapidorasyapidoras
-
+}                             //negrnegrnegrnegrnegrnegrnegrnegrnegrnegrnegryapidorasyapidorasyapidorasyakakachka
