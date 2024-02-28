@@ -1,10 +1,10 @@
 #include <MatrixMini.h>
 
 #define SPEED1 10 * 3
-#define SPEED2 7 * 3
+#define SPEED2 8 * 3
 
 #define SPEED_TURBO1 10 * 10
-#define SPEED_TURBO2 7 * 10
+#define SPEED_TURBO2 8 * 10
 
 #define MOTOR1 1
 #define MOTOR2 4
@@ -92,23 +92,23 @@ void automode(bool simple) {
     for(int i = 0; i < 3; i++) {
       if(flagDetected()) {      
         Mini.RGB1.setRGB(0, 255, 0);
-        if(i==0) {
+        if(i==0) {  //point 3
           drive(-1, 1, 800);
           delay(AUTO_MODE_DELAY);
-          drive(1, 1, 800);
+          drive(1, 1, 1300);
           delay(AUTO_MODE_DELAY);
-          drive(1, -1, 800);
+          drive(1, -1, 900);
           delay(AUTO_MODE_DELAY);
-          drive(1, 1, 2400);
+          drive(1, 1, 2300);
           break;
-        } else if(i==1) {
+        } else if(i==1) {  //point2
           drive(-1, 1, 800);
           delay(AUTO_MODE_DELAY);
           drive(1, 1, 1600);
           delay(AUTO_MODE_DELAY);
           drive(-1, 1, 500);
           delay(AUTO_MODE_DELAY);
-          drive(1, 1, 1000);
+          drive(1, 1, 1200);
           break;
         }
 
@@ -119,8 +119,8 @@ void automode(bool simple) {
       if(i < 1) {
         drive(1, 1, 800);
         delay(300);
-      } else {
-        drive(-1, 1, 850);
+      } else {  //point 1
+        drive(-1, 1, 1000);
         delay(AUTO_MODE_DELAY);
         drive(1, 1, 2600);
         delay(AUTO_MODE_DELAY);
