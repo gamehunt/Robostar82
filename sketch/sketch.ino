@@ -1,10 +1,10 @@
 #include <MatrixMini.h>
 
-#define SPEED1 7 * 3
-#define SPEED2 10 * 3
+#define SPEED1 10 * 3
+#define SPEED2 7 * 3
 
-#define SPEED_TURBO1 7 * 10
-#define SPEED_TURBO2 10 * 10
+#define SPEED_TURBO1 10 * 10
+#define SPEED_TURBO2 7 * 10
 
 #define MOTOR1 1
 #define MOTOR2 4
@@ -84,7 +84,8 @@ void automode(bool simple) {
     drive(1, -1, 800);
     drive(2, 2, 800);
   } else {
-    drive(1, 1, 1000);
+    delay(800);
+    drive(1, 1, 900);
     delay(AUTO_MODE_DELAY);
     drive(1, -1, 800);
     delay(AUTO_MODE_DELAY);
@@ -96,7 +97,7 @@ void automode(bool simple) {
           delay(AUTO_MODE_DELAY);
           drive(1, 1, 800);
           delay(AUTO_MODE_DELAY);
-          drive(1, -1, 920);
+          drive(1, -1, 800);
           delay(AUTO_MODE_DELAY);
           drive(1, 1, 2400);
           break;
@@ -115,15 +116,15 @@ void automode(bool simple) {
           Mini.RGB1.setRGB(255, 0, 0);
       }
 
-      if(i < 2) {
-        drive(1, 1, 850);
+      if(i < 1) {
+        drive(1, 1, 800);
         delay(300);
       } else {
-        drive(-1, 1, 800);
+        drive(-1, 1, 850);
         delay(AUTO_MODE_DELAY);
         drive(1, 1, 2600);
         delay(AUTO_MODE_DELAY);
-        drive(1, -1, 800);
+        drive(1, -1, 500);
         delay(AUTO_MODE_DELAY);
         drive(1, 1, 1600);
         break;
@@ -178,4 +179,4 @@ void loop() {
     move(x, sp, Mini.PS2.R2);
   }
 
-}                             //negrnegrnegrnegrnegrnegrnegrnegrnegrnegrnegryapidorasyapidorasyapidorasyakakachka
+}
