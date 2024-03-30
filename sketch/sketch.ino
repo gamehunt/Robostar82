@@ -210,7 +210,7 @@ void automode(bool simple, bool ass) {  // Запуск автономного �
   }
 }
 
-void elCtrl(bool reverse) {  // Функция движения элеватором
+void elevate(bool reverse) {  // Функция движения элеватором
   int turn = 1;
   if(reverse) {  // Изменения направления движения мотора
     turn = -1;
@@ -223,7 +223,7 @@ void elCtrl(bool reverse) {  // Функция движения элеватор
 
 //___________
 
-void capture(int lift_direction, int servo, int servo1) {  // Ф
+void capture(int lift_direction, int servo, int servo1) {
     setSpeed(MOTOR_LIFT, 90 * lift_direction);
     Mini.M2.set(8 * servo);
     Mini.I2C1.MXctrl.servoSet(SERVO_CAPTURE, 80 * servo);
@@ -265,9 +265,9 @@ void loop() {
 
     // Движение захвата
     if(Mini.PS2.CROSS) {
-      elCtrl(false);
+      elevate(false);
     } else if(Mini.PS2.TRIANGLE) {
-      elCtrl(true);
+      elevate(true);
     }
 
     // Движение робота в автономном периоде
