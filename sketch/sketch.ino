@@ -109,7 +109,7 @@ void automode(bool simple, bool ass) {  // Запуск автономного �
       for(int i = 0; i < 3; i++) {
         if(flagDetected(true)) {      
           Mini.RGB1.setRGB(0, 255, 0);
-          if(i==0) {  //point 3
+          if(i == 0) {  //point 3
             drive(1, -1, 800);
             delay(AUTO_MODE_DELAY);
             drive(1, 1, 1300);
@@ -122,7 +122,7 @@ void automode(bool simple, bool ass) {  // Запуск автономного �
             delay(AUTO_MODE_DELAY);
             drive(1, 1, 2300);
             break;
-          } else if(i==1) {  //point2
+          } else if(i == 1) {  //point2
             drive(1, -1, 800);
             delay(AUTO_MODE_DELAY);
             drive(1, 1, 1600);
@@ -167,7 +167,7 @@ void automode(bool simple, bool ass) {  // Запуск автономного �
       for(int i = 0; i < 3; i++) {
         if(flagDetected(false)) {      
           Mini.RGB1.setRGB(0, 255, 0);
-          if(i==0) {  //point 3
+          if(i == 0) {  //point 3
             drive(-1, 1, 800);
             delay(AUTO_MODE_DELAY);
             drive(1, 1, 1300);
@@ -176,7 +176,7 @@ void automode(bool simple, bool ass) {  // Запуск автономного �
             delay(AUTO_MODE_DELAY);
             drive(1, 1, 2300);
             break;
-          } else if(i==1) {  //point2
+          } else if(i == 1) {  //point2
             drive(-1, 1, 800);
             delay(AUTO_MODE_DELAY);
             drive(1, 1, 1600);
@@ -210,7 +210,7 @@ void automode(bool simple, bool ass) {  // Запуск автономного �
   }
 }
 
-void elCtrl(bool reverse=false) {  // Функция движения элеватором
+void elCtrl(bool reverse) {  // Функция движения элеватором
   int turn = 1;
   if(reverse) {  // Изменения направления движения мотора
     turn = -1;
@@ -223,8 +223,8 @@ void elCtrl(bool reverse=false) {  // Функция движения элева
 
 //___________
 
-void capture(int hhj, int servo=0, int servo1 = 0) {  // Ф
-    setSpeed(MOTOR_LIFT, 90 * hhj);
+void capture(int lift_direction, int servo, int servo1) {  // Ф
+    setSpeed(MOTOR_LIFT, 90 * lift_direction);
     Mini.M2.set(8 * servo);
     Mini.I2C1.MXctrl.servoSet(SERVO_CAPTURE, 80 * servo);
 }
@@ -251,21 +251,21 @@ void loop() {
       sp = -1;
     }
 
-    int hhj = 0;
+    int lift_direction = 0;
     if(Mini.PS2.DOWN) {
-      hhj = 1;
+      lift_direction = 1;
     } else if(Mini.PS2.UP) {
-      hhj = -1;
+      lift_direction = -1;
     }
 
-    int servo = 0;
-    
+    int servo  = 0;
+    int servo1 = 0;
 
-    capture(hhj, servo, servo1);
+    capture(lift_direction, servo, servo1);
 
     // Движение захвата
     if(Mini.PS2.CROSS) {
-      elCtrl();
+      elCtrl(false);
     } else if(Mini.PS2.TRIANGLE) {
       elCtrl(true);
     }
