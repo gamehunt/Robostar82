@@ -9,6 +9,9 @@
 #define MOTOR1 1
 #define MOTOR2 4
 #define MOTOR_ELEVATOR 3
+#define MOTOR_LIFT 2
+#define SERVO_TOWER 4
+#define SERVO_CAPTURE 2
 
 #define MAX_FLAG_DISTANCE 200
 #define MAX_ASSFLAG_DISTANCE 350
@@ -221,6 +224,17 @@ void elCtrl(bool reverse=false) {  // Функция движения элева
 
 //___________
 
+void capture(int servo) {
+  int servo = 0
+  if(Mini.PS2.DOWN) {
+    servo++;
+  } else if(Mini.PS2.UP) {
+    servo--;
+  }
+    //Mini.M2.set(8 * servo);
+    Mini.I2C1.MXctrl.servoSet(SERVO_TOWER, 1 * servo);
+}
+
 void loop() {
   if(autoMode && Mini.PS2.START){  // Запуск автономного периода
     automode(false, true);
@@ -242,6 +256,17 @@ void loop() {
     } else if(Mini.PS2.L2) {
       sp = -1;
     }
+
+    int hhj = 0;
+    if(Mini.PS2.DOWN) {
+      hhj = 1;
+    } else if(Mini.PS2.UP) {
+      hhj = -1;
+    }
+
+
+
+    capture(servo);
 
     // Движение захвата
     if(Mini.PS2.CROSS) {
