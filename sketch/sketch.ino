@@ -9,9 +9,6 @@
 #define MOTOR1 1
 #define MOTOR2 4
 #define MOTOR_ELEVATOR 3
-#define MOTOR_LIFT 2
-#define SERVO_TOWER 4
-#define SERVO_CAPTURE 2
 
 #define MAX_FLAG_DISTANCE 200
 #define MAX_ASSFLAG_DISTANCE 350
@@ -110,7 +107,7 @@ void automode(bool simple, bool ass) {  // Запуск автономного �
       for(int i = 0; i < 3; i++) {
         if(flagDetected(true)) {      
           Mini.RGB1.setRGB(0, 255, 0);
-          if(i==0) {  //point 3
+          if(i == 0) {  //point 3
             drive(1, -1, 800);
             delay(AUTO_MODE_DELAY);
             drive(1, 1, 1300);
@@ -123,7 +120,7 @@ void automode(bool simple, bool ass) {  // Запуск автономного �
             delay(AUTO_MODE_DELAY);
             drive(1, 1, 2300);
             break;
-          } else if(i==1) {  //point2
+          } else if(i == 1) {  //point2
             drive(1, -1, 800);
             delay(AUTO_MODE_DELAY);
             drive(1, 1, 1600);
@@ -168,7 +165,7 @@ void automode(bool simple, bool ass) {  // Запуск автономного �
       for(int i = 0; i < 3; i++) {
         if(flagDetected(false)) {      
           Mini.RGB1.setRGB(0, 255, 0);
-          if(i==0) {  //point 3
+          if(i == 0) {  //point 3
             drive(-1, 1, 800);
             delay(AUTO_MODE_DELAY);
             drive(1, 1, 1300);
@@ -177,7 +174,7 @@ void automode(bool simple, bool ass) {  // Запуск автономного �
             delay(AUTO_MODE_DELAY);
             drive(1, 1, 2300);
             break;
-          } else if(i==1) {  //point2
+          } else if(i == 1) {  //point2
             drive(-1, 1, 800);
             delay(AUTO_MODE_DELAY);
             drive(1, 1, 1600);
@@ -211,7 +208,7 @@ void automode(bool simple, bool ass) {  // Запуск автономного �
   }
 }
 
-void elCtrl(bool reverse=false) {  // Функция движения элеватором
+void elevate(bool reverse) {  // Функция движения элеватором
   int turn = 1;
   if(reverse) {  // Изменения направления движения мотора
     turn = -1;
@@ -223,17 +220,6 @@ void elCtrl(bool reverse=false) {  // Функция движения элева
 }
 
 //___________
-
-void capture(int servo) {
-  int servo = 0
-  if(Mini.PS2.DOWN) {
-    servo++;
-  } else if(Mini.PS2.UP) {
-    servo--;
-  }
-    //Mini.M2.set(8 * servo);
-    Mini.I2C1.MXctrl.servoSet(SERVO_TOWER, 1 * servo);
-}
 
 void loop() {
   if(autoMode && Mini.PS2.START){  // Запуск автономного периода
@@ -257,22 +243,11 @@ void loop() {
       sp = -1;
     }
 
-    int hhj = 0;
-    if(Mini.PS2.DOWN) {
-      hhj = 1;
-    } else if(Mini.PS2.UP) {
-      hhj = -1;
-    }
-
-
-
-    capture(servo);
-
     // Движение захвата
     if(Mini.PS2.CROSS) {
-      elCtrl();
+      elevate(false);
     } else if(Mini.PS2.TRIANGLE) {
-      elCtrl(true);
+      elevate(true);
     }
 
     // Движение робота в автономном периоде
